@@ -7,9 +7,11 @@ import sys
 
 from constants import *
 
-from logic import input_handler
+from logic import game_step_handler
 
 from ui import draw_players
+
+from button import Button
 
 from debug import game_history
 
@@ -23,17 +25,22 @@ bg_image = pygame.transform.scale(bg_image, (WINDOW_WIDTH, WINDOW_HEIGHT))
 
 #! Temp notes
 # * also make todolist, maybe using bookmarks exten
-#! make git and github
+# make whole game UI in affinity
 # change screen size, and center the tictac
 # make game conclusion visual
 # make menu overlayed over game conclusion
 # make visual turn indicator (now is Xs turn)
 
+# Variables
+again_button = Button(WINDOW_WIDTH // 2 - 100,
+                      WINDOW_HEIGHT // 2 + 50, 200, 50,
+                      "Play Again", 'orange1', 'orange3')
+
 # Game State
 grid = [[0, 0, 0],
         [0, 0, 0],
         [0, 0, 0]]
-turn = random.randint(1, 2)
+turn = 1  # random.randint(1, 2)
 move_count = 0
 running = True
 game_over = False
@@ -44,21 +51,37 @@ while running:
         if event.type == pygame.QUIT:  # Breaks loop if user exits
             running = False
 
-        # Takes user input and translates it into grid update
+        # Processes gameplay and check for win/tie conditions
         if not game_over:
-            turn, move_count = input_handler(
+
+            turn, move_count, game_over = game_step_handler(
                 event, grid, turn, move_count, cell_w, cell_h)
+
+            if game_over:
+                pygame.event.set_allowed([pygame.MOUSEBUTTONDOWN])
+
+        else:
+            if again_button.is_clicked(event):
+                # RESET EVERYTHING
+                grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+                turn = 1  # random.randint(1, 2)
+                move_count = 0
+                game_over = False
 
     # Visual components
     screen.blit(bg_image, (0, 0))  # Inserts Background
     draw_players(screen, grid)
+
+    if game_over:
+        again_button.draw(screen)
+
     # * draw_grid(screen) # debug
 
     pygame.display.update()  # Pushes changes to current window
     clock.tick(60)
 
 # Save game copy for future reference
-game_history(grid)
+
 print(grid)
 
 pygame.quit()

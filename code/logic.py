@@ -2,6 +2,8 @@ import pygame
 
 from constants import *
 
+from debug import game_history
+
 
 def shape_identifier(row, col, grid, turn, move_count):
     if grid[row][col] == 0:
@@ -42,6 +44,7 @@ def check_status(grid):
     if winner:
         print(f"Player {winner} wins!")
         pygame.event.set_blocked([pygame.MOUSEBUTTONDOWN])
+        game_history(grid)
         return winner
 
     # check for Tie
@@ -50,10 +53,12 @@ def check_status(grid):
             return None
     pygame.event.set_blocked([pygame.MOUSEBUTTONDOWN])
     print("Players tie!")
+    game_history(grid)
     return 'Tie'
 
 
-def input_handler(event: pygame.event.Event, grid, turn, move_count, cell_w, cell_h):
+def mouse_input_handler(event: pygame.event.Event, grid,
+                        turn, move_count, cell_w, cell_h):
     if event.type == pygame.MOUSEBUTTONDOWN:
         mouse_x, mouse_y = event.pos
 
@@ -68,7 +73,7 @@ def input_handler(event: pygame.event.Event, grid, turn, move_count, cell_w, cel
         move_count = shape_identifier(row, col, grid, turn, move_count)
 
         # Sees if new move made, then activates a status check
-        if move_count != prev_move_count:
+        if move_count > prev_move_count:
 
             # * debug
             if turn == 1:  # * debug
@@ -77,7 +82,20 @@ def input_handler(event: pygame.event.Event, grid, turn, move_count, cell_w, cel
                 print(f"O's turn, turn value: {turn}")
             print(f"Move No.{move_count}")  # * debug
 
-            check_status(grid)
+            # check_status(grid)
             turn = 2 if turn == 1 else 1
 
     return turn, move_count
+
+
+def game_step_handler(event, grid, turn, move_count, cell_w, cell_h):
+
+    prev_move_count = move_count
+    turn, move_count = mouse_input_handler(
+        event, grid, turn, move_count, cell_w, cell_h)
+
+    if move_count > prev_move_count:
+        if check_status(grid):
+            return turn, move_count, True
+
+    return turn, move_count, False
