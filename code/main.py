@@ -60,13 +60,14 @@ while running:
             if game_over:
                 pygame.event.set_allowed([pygame.MOUSEBUTTONDOWN])
 
-        else:
+        if game_over:
             if again_button.is_clicked(event):
                 # RESET EVERYTHING
                 grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
                 turn = 1  # random.randint(1, 2)
                 move_count = 0
                 game_over = False
+                again_button.alpha = 0
 
     # Visual components
     screen.blit(bg_image, (0, 0))  # Inserts Background
