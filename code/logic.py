@@ -4,6 +4,8 @@ import math
 
 from constants import *
 
+from scenes import menu_scene, pvp_scene  # , solo_scene
+
 from debug import game_history
 
 
@@ -45,7 +47,7 @@ def check_status(grid):
     winner = get_winner(grid)
     if winner:
         print(f"Player {winner} wins!")
-        pygame.event.set_blocked([pygame.MOUSEBUTTONDOWN])
+        # pygame.event.set_blocked([pygame.MOUSEBUTTONDOWN])
         game_history(grid)
         return winner
 
@@ -53,7 +55,7 @@ def check_status(grid):
     for r in grid:
         if 0 in r:
             return None
-    pygame.event.set_blocked([pygame.MOUSEBUTTONDOWN])
+    # pygame.event.set_blocked([pygame.MOUSEBUTTONDOWN])
     print("Players tie!")
     game_history(grid)
     return 'Tie'
@@ -165,22 +167,22 @@ def best_move(grid):
     return move
 
 
-def button_handler(event, pvp_button, solo_button):
+def menu_button_handler(event, screen, pvp_button, solo_button):
 
     if pvp_button.is_clicked(event):
 
         pvp_button.alpha = 0
         solo_button.alpha = 0
 
-        # Returns: solo_mode, grid, turn, move_count, game_over
-        return False, [[0, 0, 0], [0, 0, 0], [0, 0, 0]], 1, 0, False
+        return 'pvp'
 
     elif solo_button.is_clicked(event):
 
         solo_button.alpha = 0
         pvp_button.alpha = 0
 
-        return True, [[0, 0, 0], [0, 0, 0], [0, 0, 0]], 1, 0, False
+        # return True, [[0, 0, 0], [0, 0, 0], [0, 0, 0]], 1, 0, False
+        return 'solo'
 
     # Returns None if no button was clicked
     return None
