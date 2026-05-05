@@ -1,8 +1,8 @@
 import pygame
 
 from constants import *
-circle = pygame.image.load('../Assets/X.svg')
-square = pygame.image.load('../Assets/O.svg')
+circle = pygame.image.load('../Assets/X.png')
+square = pygame.image.load('../Assets/O.png')
 
 
 def draw_grid(screen):

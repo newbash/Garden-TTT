@@ -12,6 +12,7 @@ from scenes import menu_scene, pvp_scene  # , solo_scene
 # make whole game UI in affinity
 # change screen size, and center the tictac in the screen or at least the stump
 # make visual turn indicator (now is Xs turn)
+#! make the assets pngs to increase loading speed
 
 # improve and add comments overall
 # create solo mode with minimax algorithm and alpha beta pruning

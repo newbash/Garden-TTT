@@ -6,7 +6,7 @@ from button import Button
 
 pygame.init()
 clock = pygame.time.Clock()
-bg_image = pygame.image.load('../Assets/ticky2.svg')
+bg_image = pygame.image.load('../Assets/ticky.png')
 bg_image = pygame.transform.scale(bg_image, (WINDOW_WIDTH, WINDOW_HEIGHT))
 
 # Variables
